@@ -25,7 +25,7 @@ export default function LetterPage() {
                 My love, as I sit here writing this code, thinking about you, I realize just how lucky I am. 💖 From the moment we first met face-to-face at Glenmuir during those crazy COVID times, I knew there was something special about you. ✨
             </p>
             <p>
-                Watching you grow from my best friend into the love of my life has been the greatest privilege. 🌹 We've been through so much together—through all the university hiccups, the late-night stress, and the chaos of life—but you've remained my constant rock and my joy. 🪨💍
+                Watching you grow from my best friend into the love of my life has been the greatest privilege. 🌹 We've been through so much together, through all the university hiccups, the late-night stress, and the chaos of life, but you've remained my constant rock and my joy. 🪨💍
             </p>
             <p>
                 I am so incredibly proud of you in your final year of pharmacology studies! 💊👩‍⚕️ You are brilliant, resilient, and absolutely beautiful, inside and out. 🧠✨ I know it hasn't always been easy, but seeing you push through with such grace makes me fall in love with you even more every single day. 📈❤️
