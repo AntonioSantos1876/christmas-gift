@@ -16,23 +16,23 @@ interface Memory {
 const MEMORIES: Memory[] = [
   { id: 1, type: 'video', src: "/memories/Video 1 Sleepy Head.mp4", caption: "High School Days" },
   { id: 2, type: 'video', src: "/memories/Video 8 Sleepy Head.mp4", caption: "Sleep as usual" },
-  { id: 3, type: 'video', src: "/memories/Video 3 Love Overdose.mp4", caption: "Fun Times" },
+  { id: 3, type: 'video', src: "/memories/video-3-love-overdose.mp4", caption: "Fun Times" },
   { id: 4, type: 'image', src: "/memories/First School Trip.jpeg", caption: "First School Trip" },
   { id: 5, type: 'image', src: "/memories/First School Trip 2.jpeg", caption: "First School Trip Part 2" },
   { id: 6, type: 'image', src: "/memories/family outing.jpeg", caption: "Family outing" },
-  { id: 7, type: 'image', src: "/memories/Glowing.jpeg", caption: "Glowing" },
+  { id: 7, type: 'image', src: "/memories/glowing.jpeg", caption: "Glowing" },
   { id: 8, type: 'image', src: "/memories/Pool cam.jpeg", caption: "Pool cam" },
   { id: 9, type: 'image', src: "/memories/Pool cam 2.jpeg", caption: "Pool cam Part 2" },
   { id: 10, type: 'image', src: "/memories/Birthday barb.jpeg", caption: "Forever & Always" },
-  { id: 11, type: 'image', src: "/memories/Bae bday.jpeg", caption: "To many many more" },
+  { id: 11, type: 'image', src: "/memories/bae-bday.jpeg", caption: "To many many more" },
   { id: 12, type: 'image', src: "/memories/forehead kiss for bae.jpeg", caption: "Kisses" },
   { id: 13, type: 'image', src: "/memories/beautiful just because.jpeg", caption: "Beautiful" },
 ];
 
 // SECRET: Only for her eyes! 
 const HIDDEN_MEMORIES: Memory[] = [
-  { id: 101, type: 'image', src: "/memories/secret BBB in my shirt.jpeg", caption: "My Eyes Only: 1" },
-  { id: 102, type: 'video', src: "/memories/Secret Video 1 Pool Kiss cam.mp4", caption: "Secret Video 🤫" }, 
+  { id: 101, type: 'image', src: "/memories/Secret BBB in my shirt.jpeg", caption: "My Eyes Only: 1" },
+  { id: 102, type: 'video', src: "/memories/Secret Video 1 Pool Kiss cam .mp4", caption: "Secret Video 🤫" }, 
   { id: 103, type: 'image', src: "/memories/embarass me self .jpeg", caption: "jah jah" },
   { id: 104, type: 'image', src: "/memories/Secret no face no trace.jpeg", caption: "My Eyes Only: 4" },
   { id: 105, type: 'image', src: "/memories/secret as a engineer wifey.jpeg", caption: "Engineering wifey" },
