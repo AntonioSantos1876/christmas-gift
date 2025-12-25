@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
+import BackgroundMusic from "./components/BackgroundMusic";
 
 // These are the fonts we use to make the app look nice.
 // Geist is for the main UI text (modern and clean), 
@@ -48,6 +49,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <BackgroundMusic />
           </ThemeProvider>
       </body>
     </html>
