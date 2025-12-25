@@ -1,27 +1,33 @@
 @import "tailwindcss";
 
+/* 
+  We define a custom 'dark' variant to easily switch styles based on the theme.
+  This looks for the '.dark' class on parent elements.
+*/
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Default Light Mode (Snowy Day) */
+  /* Default Light Mode (Snowy Day Theme) */
   --background: #f8fafc; /* Slate 50 (Snow White) */
   --foreground: #1e293b; /* Slate 800 */
   
+  /* Christmas Palette defined here for easy reuse */
   --christmas-red: #C41E3A;
-  --christmas-gold: #D4AF37; /* Slightly darker gold for light mode text */
+  --christmas-gold: #D4AF37; /* Slightly darker gold for readability in light mode */
   --christmas-dark: #f1f5f9; /* Light gray for background alt */
   --christmas-green: #15803d; /* Green 700 */
-  --her-purple: #9333ea; /* Purple 600 */
+  --her-purple: #9333ea; /* Purple 600 - Her favorite color! */
   --her-purple-light: #e9d5ff; /* Purple 200 */
 }
 
 .dark {
-  /* Dark Mode (Christmas Night) */
-  --background: #0D1616; /* Deep Christmas Green/Black */
+  /* Dark Mode (Christmas Night Theme - The default cozy vibe) */
+  --background: #0D1616; /* Deep Christmas Green/Black - very elegant */
   --foreground: #f8fafc; /* Slate 50 */
   
+  /* Adjusted colors for dark mode context */
   --christmas-red: #C41E3A;
-  --christmas-gold: #FFD700;
+  --christmas-gold: #FFD700; /* Bright gold pops against black */
   --christmas-dark: #051011;
   --christmas-green: #165B33;
   --her-purple: #9D00FF; 

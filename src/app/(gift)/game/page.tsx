@@ -5,14 +5,16 @@ import { motion } from "framer-motion";
 import { Gift, Snowflake, RefreshCw, Trophy } from "lucide-react";
 
 export default function GamePage() {
+  // We use a canvas to draw the game because it's fast and smooth.
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
 
-  // Game state refs for animation loop
+  // We use a specific 'ref' to hold the game state instead of normal React state
+  // because we update it 60 times a second and we don't want to re-render the whole component that fast!
   const gameState = useRef({
-    playerX: 50, // Percentage
+    playerX: 50, // Percentage of the screen width (starts in middle)
     presents: [] as { x: number; y: number; speed: number; id: number }[],
     score: 0,
     isPlaying: false
@@ -39,21 +41,24 @@ export default function GamePage() {
     let animationFrameId: number;
     let spawnInterval: NodeJS.Timeout;
 
+    // This helper makes a new present appear at a random spot at the top.
     const spawnPresent = () => {
         if (!gameState.current.isPlaying) return;
         gameState.current.presents.push({
             x: Math.random() * (canvas.width - presentSize),
-            y: -50,
-            speed: Math.random() * 3 + 2,
-            id: Date.now() + Math.random()
+            y: -50, // Start slightly above the screen
+            speed: Math.random() * 3 + 2, // Random falling speed
+            id: Date.now() + Math.random() // Unique ID
         });
     };
 
+    // THE MAIN GAME LOOP (Run 60 times per second)
     const draw = () => {
         if (!ctx || !canvas) return;
+        // 1. Clear the screen so we can draw the next frame
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw Player (Santa's Bag)
+        // 2. Draw Player (It's a red Christmas bag!)
         const playerXPx = (gameState.current.playerX / 100) * (canvas.width - playerWidth);
         
         ctx.fillStyle = "#C41E3A"; // Christmas Red
@@ -61,7 +66,7 @@ export default function GamePage() {
         ctx.roundRect(playerXPx, canvas.height - playerHeight - 10, playerWidth, playerHeight, 10);
         ctx.fill();
         
-        // Bag details
+        // Add gold details to the bag
         ctx.strokeStyle = "#FFD700";
         ctx.lineWidth = 3;
         ctx.stroke();
@@ -70,20 +75,21 @@ export default function GamePage() {
         ctx.fillText("💰", playerXPx + 10, canvas.height - 25);
 
 
-        // Draw Presents
+        // 3. Draw and Move Presents
         gameState.current.presents.forEach((p, index) => {
-            p.y += p.speed;
+            p.y += p.speed; // Move it down!
 
-            // Draw present
-            ctx.fillStyle = index % 2 === 0 ? "#165B33" : "#9D00FF"; // Green or Purple
+            // Draw box
+            ctx.fillStyle = index % 2 === 0 ? "#165B33" : "#9D00FF"; // Green or Purple (Her favorite colors)
             ctx.fillRect(p.x, p.y, presentSize, presentSize);
             
-            // Ribbon
+            // Draw ribbon
             ctx.fillStyle = "#FFD700";
             ctx.fillRect(p.x + presentSize/2 - 5, p.y, 10, presentSize);
             ctx.fillRect(p.x, p.y + presentSize/2 - 5, presentSize, 10);
 
-            // Collision Detection
+            // 4. Collision Detection
+            // Did the present hit the bag?
             if (
                 p.y + presentSize > canvas.height - playerHeight - 10 &&
                 p.y < canvas.height - 10 &&
@@ -92,18 +98,18 @@ export default function GamePage() {
             ) {
                 // Catch!
                 gameState.current.score += 10;
-                setScore(gameState.current.score);
-                gameState.current.presents.splice(index, 1);
+                setScore(gameState.current.score); // Update React state for the UI to see
+                gameState.current.presents.splice(index, 1); // Remove from game
             }
 
-            // Missed
+            // Missed the present?
             if (p.y > canvas.height) {
                 gameState.current.presents.splice(index, 1);
-                // Optional: Game Over on miss? Let's assume infinite play for fun.
-                // Or maybe lose life? Simple infinite score based.
+                // We're nice, so no game over for missing. Just keep playing!
             }
         });
 
+        // Request the next frame if we are still playing
         if (gameState.current.isPlaying) {
             animationFrameId = requestAnimationFrame(draw);
         }
@@ -127,7 +133,7 @@ export default function GamePage() {
         setGameStarted(false);
     };
 
-    // Controls
+    // Mouse controls: Mapping mouse position to game player position
     const handleMouseMove = (e: MouseEvent) => {
         if (!gameState.current.isPlaying) return;
         const rect = canvas.getBoundingClientRect();
@@ -136,7 +142,7 @@ export default function GamePage() {
         gameState.current.playerX = Math.max(0, Math.min(100, percentage));
     };
 
-    // Touch controls
+    // Touch controls: Same thing but for her phone!
     const handleTouchMove = (e: TouchEvent) => {
         if (!gameState.current.isPlaying) return;
         const rect = canvas.getBoundingClientRect();

@@ -3,9 +3,15 @@
 import { motion } from "framer-motion";
 import { Heart, Star } from "lucide-react";
 
+// This page is the "heart" of the digital gift.
+// It's a simple, elegant letter designed to be read slowly and cherished.
 export default function LetterPage() {
   return (
     <div className="min-h-screen py-20 px-4 md:px-8 max-w-4xl mx-auto">
+      {/* 
+        The letter slides up gently (y: 30 -> y: 0) to give a feeling of 
+        opening an envelope or unwrapping a note.
+      */}
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -20,6 +26,10 @@ export default function LetterPage() {
             To My Dearest Future Wife... 🎄❤️
         </h1>
 
+        {/* 
+           We use 'font-serif' and 'tracking-wide' here to make it look 
+           more like a handwritten or formal love letter.
+        */}
         <div className="space-y-6 text-gray-200 text-lg leading-relaxed font-serif tracking-wide">
             <p>
                 My love, as I sit here writing this code, thinking about you, I realize just how lucky I am. 💖 From the moment we first met face-to-face at Glenmuir during those crazy COVID times, I knew there was something special about you. ✨
@@ -42,6 +52,7 @@ export default function LetterPage() {
         </div>
 
         <div className="mt-12 flex justify-center">
+            {/* A pulsing heartbeat to sign off */}
             <Heart className="w-12 h-12 text-christmas-red animate-pulse fill-current" />
         </div>
 

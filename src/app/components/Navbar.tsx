@@ -9,19 +9,27 @@ import { useState, useEffect } from "react";
 export default function Navbar() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
+  // We need to wait until the component is mounted on the client to show the theme toggle
+  // to avoid weird server/client mismatches.
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
+  // Helper to highlight the link of the page she is currently on.
   const isActive = (path: string) => pathname === path;
 
   return (
+    // Sticky navbar that stays at the top as she scrolls.
     <nav className="fixed top-0 left-0 w-full z-50 bg-white/20 dark:bg-black/20 backdrop-blur-md border-b border-black/5 dark:border-white/10 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          
+          {/* Logo / Title area */}
           <div className="flex-shrink-0">
              <span className="text-christmas-red dark:text-christmas-gold font-serif font-bold text-xl tracking-wider">Merry Christmas</span>
           </div>
+
+          {/* Desktop Navigation Links */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               <Link 
@@ -49,11 +57,14 @@ export default function Navbar() {
               </Link>
             </div>
           </div>
+
+          {/* Right side controls (Theme Toggle + Exit) */}
           <div className="flex items-center gap-4">
             {mounted && (
                 <button
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                     className="p-2 rounded-full bg-black/5 dark:bg-white/10 text-christmas-gold hover:scale-110 transition-transform"
+                    title="Toggle Theme" // Helpful tooltip
                 >
                     {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </button>
@@ -69,7 +80,7 @@ export default function Navbar() {
           </div>
         </div>
         
-        {/* Mobile menu - simplified */}
+        {/* Mobile menu - Simplified for smaller screens so it fits nicer at the bottom/middle or just stacks */}
         <div className="md:hidden flex justify-around py-2 border-t border-black/5 dark:border-white/10 bg-white/30 dark:bg-black/30">
              <Link href="/memories" className={`p-2 ${isActive('/memories') ? 'text-christmas-red' : 'text-gray-600 dark:text-gray-400'}`}><Gift /></Link>
              <Link href="/letter" className={`p-2 ${isActive('/letter') ? 'text-christmas-gold' : 'text-gray-600 dark:text-gray-400'}`}><Mail /></Link>

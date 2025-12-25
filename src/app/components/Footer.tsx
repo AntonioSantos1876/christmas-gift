@@ -1,3 +1,5 @@
+// This little footer sits at the bottom of the page.
+// It contains a sweet personal message and a copyright claim by "Love Inc".
 export default function Footer() {
   return (
     <footer className="relative z-10 bg-white/30 dark:bg-black/40 backdrop-blur-sm border-t border-black/5 dark:border-white/5 py-4 mt-8 transition-colors duration-300">
