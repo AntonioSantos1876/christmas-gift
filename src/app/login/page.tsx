@@ -7,34 +7,44 @@ import { Heart, Lock, Calendar, Palette, User } from "lucide-react";
 import Footer from "../components/Footer";
 
 // TODO: REPLACE THIS WITH THE REAL LAST NAME or ask the user to input it in the code
+// These are the "secrets" she needs to know to unlock the gift.
+// Only the person who knows these specific details gets in!
 const BOYFRIEND_LAST_NAME = "Crawford"; // Placeholder
 const TARGET_BIRTHDAY = "2003-10-13";
 const TARGET_COLOR = "purple";
 
 export default function LoginPage() {
   const router = useRouter();
+  
+  // This state keeps track of what the user types into the input fields.
   const [formData, setFormData] = useState({
     birthday: "",
     color: "",
     lastName: "",
   });
+  
+  // We use this to show any friendly error messages if she gets something wrong.
   const [error, setError] = useState("");
 
+  // This function updates our 'formData' state every time she types a character.
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError("");
+    setError(""); // Clear any old errors so she can try again fresh.
   };
 
+  // This is where the magic check happens when she clicks "Unlock Gift".
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Stop the page from reloading.
 
     // 1. Check Birthday
+    // Does the date she picked match the special date?
     if (formData.birthday !== TARGET_BIRTHDAY) {
         setError("That's not the right birthday... are you who you say you are? 🧐");
         return;
     }
 
     // 2. Check Color
+    // We confirm the favorite color.
     if (formData.color.toLowerCase().trim() !== TARGET_COLOR) {
         setError("Hmm, that doesn't sound like your favorite color. Try again! 🎨");
         return;
@@ -54,21 +64,22 @@ export default function LoginPage() {
          return;
     }
 
-    // Additional check if it IS the placeholder, maybe just let it pass so I can verify?
-    // User can change it later.
-    
+    // If all checks pass, we let her in! 
+    // Redirect to the Terms and Conditions page.
     router.push("/terms");
   };
 
   return (
+    // The main container fills the screen and centers everything.
     <div className="min-h-screen flex items-center justify-center p-4">
-      <motion.div 
+        {/* Animated card container using Framer Motion for a smooth entry */}
+        <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="max-w-md w-full bg-black/40 backdrop-blur-md p-8 rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden"
       >
-        {/* Decorative elements */}
+        {/* Decorative background glows for that Christmas ambiance */}
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-christmas-red/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-christmas-gold/20 rounded-full blur-3xl" />
 
@@ -80,6 +91,7 @@ export default function LoginPage() {
             <p className="text-gray-300">Please verify it's you to open your gift.</p>
         </div>
 
+        {/* The Login Form */}
         <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
             <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-300 flex items-center gap-2">

@@ -1,14 +1,34 @@
 import type { Metadata } from "next";
-// import { Playfair_Display, Inter } from "next/font/google"; // Disabled due to build env network issues
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Snowfall from "./components/Snowfall";
 import { ThemeProvider } from "./components/ThemeProvider";
 
+// These are the fonts we use to make the app look nice.
+// Geist is for the main UI text (modern and clean), 
+// and Playfair Display gives that elegant, "Christmas card" feel to headings.
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+});
+
+// This controls what shows up in the browser tab and search results.
 export const metadata: Metadata = {
   title: "A Christmas Gift",
-  description: "A walk down memory lane.",
+  description: "A special digital gift found at chrixtmas.vercel.app",
 };
 
+// This is the main shell of our entire application.
+// Every other page sits inside this 'RootLayout'.
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -16,24 +36,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
-      </head>
+      {/* We add our custom fonts here so they are available everywhere */}
       <body
-        className={`antialiased bg-christmas-dark text-white font-sans overflow-x-hidden`}
-        style={{
-            // Manually setting variables since next/font isn't injecting them
-            // These match the names expected by globals.css
-            "--font-playfair": "'Playfair Display', serif",
-            "--font-inter": "'Inter', sans-serif",
-        } as React.CSSProperties}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Snowfall />
-            <div className="relative z-10">{children}</div>
-        </ThemeProvider>
+        {/* The ThemeProvider handles the dark/light mode magic (mainly dark for the cozy vibes) */}
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
       </body>
     </html>
   );
