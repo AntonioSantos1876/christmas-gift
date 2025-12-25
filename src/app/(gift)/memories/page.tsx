@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring, AnimatePresence, useMotionValue, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
-import { Lock, Eye, EyeOff, Maximize2, Minimize2, Play, Pause } from "lucide-react";
+import { Lock, EyeOff, Maximize2, Minimize2, Play, Pause, X } from "lucide-react";
 
 // Placeholder data - User needs to add real images to /public/memories/
 interface Memory {
@@ -50,6 +50,11 @@ export default function MemoriesPage() {
   // Track scroll rotation to influence card styles
   const [currentRotation, setCurrentRotation] = useState(0);
 
+  // Password Protection State
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       containerRef.current?.requestFullscreen().catch(err => {
@@ -69,6 +74,27 @@ export default function MemoriesPage() {
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
+
+  const handleToggleHidden = () => {
+    if (showHidden) {
+      setShowHidden(false);
+    } else {
+      setShowPasswordModal(true);
+      setPasswordInput("");
+      setPasswordError(false);
+    }
+  };
+
+  const handlePasswordSubmit = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (passwordInput === "BBB") {
+      setShowHidden(true);
+      setShowPasswordModal(false);
+    } else {
+      setPasswordError(true);
+      // Shake animation effect could be added here, but simple error state for now
+    }
+  };
   
   const currentMemories = showHidden ? HIDDEN_MEMORIES : MEMORIES;
   
@@ -124,7 +150,6 @@ export default function MemoriesPage() {
                     // If it's > 90 or < -90, it's effectively "behind" the wheel or obscured.
                     
                     const isFocused = Math.abs(effectiveAngle) < (angleStep / 1.5);
-                    const isVisible = Math.abs(effectiveAngle) < 100; // Show a bit more than just 90 deg so they fade in/out nicely
 
                     // Calculate Opacity based on distance from front
                     const opacity = Math.max(0, 1 - (Math.abs(effectiveAngle) / 90));
@@ -157,7 +182,7 @@ export default function MemoriesPage() {
 
         <div className="fixed bottom-10 right-10 z-50 pointer-events-auto">
             <button
-                onClick={() => setShowHidden(!showHidden)}
+                onClick={handleToggleHidden}
                 className={`p-4 rounded-full shadow-2xl transition-all duration-300 border-2 ${showHidden ? 'bg-christmas-red border-christmas-gold text-white rotate-180' : 'bg-white/10 border-white/20 text-white/50 hover:bg-white/20 hover:text-white'}`}
                 title={showHidden ? "Hide Secret Memories" : "Show Secret Memories"}
             >
@@ -168,6 +193,58 @@ export default function MemoriesPage() {
         <div className="fixed bottom-10 left-1/2 -translate-x-1/2 text-center z-50 animate-bounce">
             <p className="text-white/50 text-sm font-serif">Scroll to explore memories...</p>
         </div>
+
+        {/* Password Modal */}
+        <AnimatePresence>
+            {showPasswordModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm pointer-events-auto">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                        className="bg-christmas-dark border border-christmas-gold/30 p-8 rounded-2xl shadow-2xl max-w-sm w-full relative"
+                    >
+                        <button 
+                            onClick={() => setShowPasswordModal(false)}
+                            className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+
+                        <div className="text-center mb-6">
+                            <Lock className="w-10 h-10 text-christmas-gold mx-auto mb-4" />
+                            <h3 className="text-xl font-serif text-white mb-2">Secret Access</h3>
+                            <p className="text-white/60 text-sm">Enter the password to view secret memories.</p>
+                        </div>
+
+                        <form onSubmit={handlePasswordSubmit} className="space-y-4">
+                            <div>
+                                <input
+                                    type="password"
+                                    value={passwordInput}
+                                    onChange={(e) => {
+                                        setPasswordInput(e.target.value);
+                                        if (passwordError) setPasswordError(false);
+                                    }}
+                                    className={`w-full bg-white/5 border ${passwordError ? 'border-red-500 animate-pulse' : 'border-white/10 focus:border-christmas-gold'} rounded-lg px-4 py-3 text-white placeholder:text-white/20 outline-none transition-all`}
+                                    placeholder="Enter password..."
+                                    autoFocus
+                                />
+                                {passwordError && (
+                                    <p className="text-red-400 text-xs mt-2 pl-1">Incorrect password. Please try again.</p>
+                                )}
+                            </div>
+                            <button
+                                type="submit"
+                                className="w-full bg-christmas-gold text-christmas-dark font-medium py-3 rounded-lg hover:bg-white transition-colors shadow-lg shadow-christmas-gold/10"
+                            >
+                                Unlock Memories
+                            </button>
+                        </form>
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
 
         <style jsx global>{`
             .perspective-container {
